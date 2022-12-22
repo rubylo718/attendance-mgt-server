@@ -1,0 +1,21 @@
+{
+  "name": "attendance-mgt-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "lint": "eslint \"**/*.js\" --fix"
+  },
+  "keywords": [],
+  "author": "Ruby Lo",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.30.0"
+  }
+}
