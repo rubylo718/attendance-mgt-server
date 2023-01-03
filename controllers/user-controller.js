@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const helpers = require('../_helpers')
 const { User } = require('../models')
 
 const userController = {
@@ -45,6 +46,14 @@ const userController = {
     } catch (err) {
       next(err)
     }
+  },
+  getCurrentUser: async (req, res) => {
+    const id = helpers.getUser(req).id
+    const user = await User.findByPk(id, {
+      attributes: ['id', 'account', 'name', 'isAdmin', 'isLocked']
+    })
+    if (!user) return res.json({ status: 'error', message: 'user not found' })
+    return res.json(user)
   }
 }
 
