@@ -12,6 +12,7 @@ router.get('/', authenticated, authUser, (req, res) => {
 
 router.get('/users/currentUser', authenticated, userController.getCurrentUser)
 router.post('/users/signin', userController.signIn)
+router.get('/records/rawRecords', authenticated, authUser, recordController.getUserRawRecords)
 router.post('/check',authenticated, authUser, recordController.addRecord)
 
 module.exports = router
