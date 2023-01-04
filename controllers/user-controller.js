@@ -54,6 +54,31 @@ const userController = {
     })
     if (!user) return res.json({ status: 'error', message: 'user not found' })
     return res.json(user)
+  },
+  editUser: async (req, res, next) => {
+    try {
+      // get the user instance (full data, including hashing password)
+      const id = helpers.getUser(req).id
+      const user = await User.findByPk(id)
+
+      let { password, checkPassword } = req.body
+      password = password?.trim()
+      checkPassword = checkPassword?.trim()
+
+      if (password !== checkPassword) {
+        return res.status(401).json({status: 'error', message: 'Password and checkPassword are not same.'})
+      }
+
+      const updatedUser = await user.update({
+        password: password ? bcrypt.hashSync(password, 10) : user.password
+      })
+
+      const data = updatedUser.toJSON()
+      delete data.password
+      return res.status(200).json(data)
+    } catch(err) {
+      next(err)
+   }
   }
 }
 
