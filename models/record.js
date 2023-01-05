@@ -10,6 +10,18 @@ module.exports = (sequelize, DataTypes) => {
     checkMethod: {
       type: DataTypes.STRING,
       defaultValue: 'webApp'
+    },
+    checkDate: {
+      type: DataTypes.STRING,
+      defaultValue: '19800101'
+    },
+    checkTime: {
+      type: DataTypes.STRING,
+      defaultValue: '00:00:00'
+    },
+    workday: {
+      type: DataTypes.STRING,
+      defaultValue: '19800101'
     }
   }, {
     sequelize,

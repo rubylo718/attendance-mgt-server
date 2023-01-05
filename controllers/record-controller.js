@@ -1,11 +1,18 @@
 const helpers = require('../_helpers')
 const { Record } = require('../models')
+const dayjs = require('dayjs')
+const { dayCal } = require('../helpers/day-helper')
 
 const recordController = {
   addRecord: async (req, res) => {
     try {
       const id = helpers.getUser(req).id
-      await Record.create({ UserId: id })
+      await Record.create({ 
+        UserId: id, 
+        checkDate: dayjs(new Date()).format('YYYYMMDD'),
+        checkTime: dayjs(new Date()).format('HH:mm:ss'),
+        workday: dayCal.workdayCal(new Date())
+        })
       return res.status(200).json({ status: 'success', message: 'New record added' })
     } catch (err) {
       return res.status(400).json({ status: 'error', message: `Failed adding record. ${err}`})
@@ -19,13 +26,11 @@ const recordController = {
         order: [['createdAt', 'DESC']],
         raw: true,
       })
-
       return res.status(200).json(userRawRecords)
-
     } catch (err) {
       return res.status(400).json({ status: 'error', message: `Failed get user raw records. ${err}`})
     }
-  } 
+  }
 }
 
 module.exports = recordController
