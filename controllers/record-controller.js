@@ -8,7 +8,7 @@ const recordController = {
       await Record.create({ UserId: id })
       return res.status(200).json({ status: 'success', message: 'New record added' })
     } catch (err) {
-      console.log('something went wrong', err)
+      return res.status(400).json({ status: 'error', message: `Failed adding record. ${err}`})
     }
   },
   getUserRawRecords: async (req, res) => {
@@ -23,7 +23,7 @@ const recordController = {
       return res.status(200).json(userRawRecords)
 
     } catch (err) {
-      console.log('something went wrong', err)
+      return res.status(400).json({ status: 'error', message: `Failed get user raw records. ${err}`})
     }
   } 
 }
