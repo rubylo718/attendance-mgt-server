@@ -11,17 +11,23 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       defaultValue: 'webApp'
     },
-    checkDate: {
-      type: DataTypes.STRING,
-      defaultValue: '19800101'
-    },
-    checkTime: {
-      type: DataTypes.STRING,
-      defaultValue: '00:00:00'
-    },
     workday: {
       type: DataTypes.STRING,
       defaultValue: '19800101'
+    },
+    checkIn: {
+      type: DataTypes.STRING
+    },
+    checkOut: {
+      type: DataTypes.STRING,
+      defaultValue: '19800101 00:00:00'
+    }, 
+    isHoliday: {
+      type: DataTypes.BOOLEAN
+    },
+    isNormal: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     }
   }, {
     sequelize,

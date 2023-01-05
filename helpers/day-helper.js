@@ -1,5 +1,3 @@
-// to calculate the the workday of the record
-// the workday change at the next day 5 am
 const dayjs = require('dayjs')
 const calendarData = require('../calendar2023.json')
  
@@ -15,7 +13,6 @@ const dayCal = {
     return workday
   },
   isHoliday: (workday) => { // 20230101
-    // console.log(calendarData.length)
     for (const item of calendarData) {
       if (item.date === workday) {
         return item.isHoliday

@@ -15,7 +15,7 @@ module.exports = {
     
     const seedRecords = []
     users.forEach(user => {
-      const userRecords = Array.from({ length: 6}, () => ({
+      const userRecords = Array.from({ length: 4} , () => ({
         UserId: user.id,
         checkMethod: 'webApp',
         createdAt: faker.date.recent(4),
@@ -25,9 +25,11 @@ module.exports = {
     })
     const newRecords = seedRecords.map(record => ({
       ...record, 
-      checkDate: dayjs(record.createdAt).format('YYYYMMDD'),
-      checkTime: dayjs(record.createdAt).format('HH:mm:ss'),
-      workday: dayCal.workdayCal(dayjs(record.createdAt))
+      workday: dayCal.workdayCal(dayjs(record.createdAt)),
+      checkIn: dayjs(record.createdAt).format('YYYYMMDD HH:mm:ss'),
+      checkOut: dayjs(record.createdAt).add(8, 'hour').format('YYYYMMDD HH:mm:ss'),
+      isHoliday: dayCal.isHoliday(dayjs(record.createdAt).format('YYYYMMDD')),
+      isNormal: true
     }))
     await queryInterface.bulkInsert('Records', newRecords)
   },
