@@ -2,7 +2,7 @@ const calendarRequest = require('../config/api')
 const { appendFile } = require('node:fs')
 
 const calendarController =  {
-  updateCalendar: async (req, res) => {
+  updateCalendar: async (req, res, next) => {
     try {
       const calendar = await calendarRequest.get('/2023.json').then(res => {
         const data = JSON.stringify(res.data)
@@ -16,7 +16,7 @@ const calendarController =  {
         }
       })
     } catch (err) {
-      return res.status(400).json({ status: 'error', message: `calendar request failed: ${err}`})
+      next(err)
     }
   }
 }

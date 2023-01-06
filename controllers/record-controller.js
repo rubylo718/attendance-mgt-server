@@ -4,7 +4,7 @@ const dayjs = require('dayjs')
 const { dayCal } = require('../helpers/day-helper')
 
 const recordController = {
-  addRecord: async (req, res) => {
+  addRecord: async (req, res, next) => {
     try {
       const nowTime = dayjs(new Date()).format('YYYYMMDD HH:mm:ss')
       const nowWorkday = dayCal.workdayCal(new Date())
@@ -42,10 +42,10 @@ const recordController = {
       }
       return res.status(200).json({ status: 'success', message: 'New record added' })
     } catch (err) {
-      return res.status(400).json({ status: 'error', message: `Failed adding record. ${err}`})
+      next()
     }
   },
-  getUserRecords: async (req, res) => {
+  getUserRecords: async (req, res, next) => {
     try {
       const id = helpers.getUser(req).id
       const userRecords = await Record.findAll({
@@ -55,7 +55,7 @@ const recordController = {
       })
       return res.status(200).json(userRecords)
     } catch (err) {
-      return res.status(400).json({ status: 'error', message: `Failed get user records. ${err}`})
+      next()
     }
   }
 }
