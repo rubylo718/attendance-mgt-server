@@ -25,13 +25,38 @@ const userController = {
           status: 'error',
           message: 'User is not existed.'
         })
+      } 
+      
+      if (user.isLocked) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'This account is locked. Please contact Admin.'
+        })
       }
 
       if (!bcrypt.compareSync(password, user.password)) {
-        return res.status(401).json({
-          status: 'error',
-          message: 'Password incorrect.'
+        if (user.passwordWrongTimes < 4) {
+          await User.update({
+            passwordWrongTimes: user.passwordWrongTimes + 1
+           }, { 
+            where: { account } 
+          })
+          return res.status(401).json({
+            status: 'error',
+            message: `Password incorrect. ${user.passwordWrongTimes + 1} time(s).`
         })
+        } else {
+          await User.update({
+            passwordWrongTimes: user.passwordWrongTimes++,
+            isLocked: true
+          }, {
+            where: { account }
+          })
+          return res.status(401).json({
+            status: 'error',
+            message: `Password incorrect 5 times. Account is locked. Please contact Admin.`
+        })
+        }
       }
 
       const payload = { id: user.id }
