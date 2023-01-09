@@ -1,7 +1,9 @@
 # Attendance Management System - Server
 Attendance management system 為一個考勤管理系統。使用者可登入系統後打卡，亦可查詢自己的每日出勤紀錄。
 
-目前此系統僅有後端。
+相關連結：
+
+[API 文件（建置中）](https://dry-ridge-01972.herokuapp.com/api-doc/) | 前端 Repo（建置中）
 
 ## Login Account
 - 使用者 account: 1001, password: titaner
@@ -31,9 +33,6 @@ Attendance management system 為一個考勤管理系統。使用者可登入系
 
 
 ## To be Developed
-### 使用者認證
-- 使用者登出
-
 ### 使用者功能
 - 打卡 GPS 位置驗證（位置需在距離指定地點 400 公尺內）
 - 掃描 QR Code 打卡

@@ -3,17 +3,22 @@
   "info": {
     "version": "1.0.0",
     "title": "Attendance-mgt-server API",
-    "description": ""
+    "description": "Attendance management system"
   },
   "servers": [
     {
-      "url": "http://localhost:3000/"
+      "url": "http://localhost:3000/",
+      "description": "Local server"
+    }, 
+    {
+      "url": "https://dry-ridge-01972.herokuapp.com/",
+      "description": "Heroku server"
     }
   ],
   "paths": {
     "/users/currentUser": {
       "get": {
-        "description": "",
+        "description": "取得目前登入使用者的資料",
         "parameters": [],
         "responses": {
           "200": {
