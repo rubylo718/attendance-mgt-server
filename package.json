@@ -7,7 +7,8 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "lint": "eslint \"**/*.js\" --fix",
-    "dbreset": "npx sequelize db:seed:undo:all && npx sequelize db:migrate:undo:all && npx sequelize db:migrate && npx sequelize db:seed:all"
+    "dbreset": "npx sequelize db:seed:undo:all && npx sequelize db:migrate:undo:all && npx sequelize db:migrate && npx sequelize db:seed:all",
+    "swagger-autogen": "node ./swagger.js"
   },
   "keywords": [],
   "author": "Ruby Lo",
@@ -24,7 +25,9 @@
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "sequelize": "^6.28.0",
-    "sequelize-cli": "^6.5.2"
+    "sequelize-cli": "^6.5.2",
+    "swagger-autogen": "^2.22.0",
+    "swagger-ui-express": "^4.6.0"
   },
   "devDependencies": {
     "eslint": "^8.30.0"
