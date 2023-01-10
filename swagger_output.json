@@ -3,49 +3,224 @@
   "info": {
     "version": "1.0.0",
     "title": "Attendance-mgt-server API",
-    "description": "Attendance management system"
+    "description": "API documents of Attendance management system"
   },
   "servers": [
     {
-      "url": "http://localhost:3000/",
-      "description": "Local server"
-    }, 
-    {
       "url": "https://dry-ridge-01972.herokuapp.com/",
       "description": "Heroku server"
+    }, 
+    {
+      "url": "http://localhost:3000/",
+      "description": "Local server"
     }
   ],
   "paths": {
     "/users/currentUser": {
       "get": {
-        "description": "取得目前登入使用者的資料",
+        "description": "透過 password 登入後回傳 user 取得目前登入使用者的資料",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK. Return an user object.",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "type": "object",
+                  "properties":{
+                    "id": {
+                      "type": "integer",
+                      "description": "The user id."
+                    },
+                    "account": {
+                      "type": "string",
+                      "description": "The user account."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The user name."
+                    },
+                    "isAdmin": {
+                      "type": "boolean",
+                      "description": "If the user is Admin."
+                    },
+                    "isLocked": {
+                      "type": "boolean",
+                      "description": "If the user account is locked."
+                    }
+                  }
+                  }
+                }
+              }
+            }
           },
-          "401": {
-            "description": "Unauthorized"
+          "404": {
+            "description": "Not Found. Return error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "user not found"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/users/signin": {
       "post": {
-        "description": "",
+        "description": "使用者與管理者輸入帳號密碼後登入",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK. Return success message and user data except for the password.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string",
+                          "description": "token of the authorized user"
+                        },
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "description": "The user id."
+                            },
+                            "account": {
+                              "type": "string",
+                              "description": "The user account."
+                            },
+                            "name": {
+                              "type": "string",
+                              "description": "The user name."
+                            },
+                            "passwordWrongTimes": {
+                              "type": "integer",
+                              "description": "Times of the user entered wrong password."
+                            },
+                            "isAdmin": {
+                              "type": "boolean",
+                              "description": "If the user is Admin."
+                            },
+                            "isLocked": {
+                              "type": "boolean",
+                              "description": "If the user account is locked."
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time",
+                              "description": "The timestamp of the user account created."
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time",
+                              "description": "The timestamp of the user account updated."
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request. Either account/password column is empty or only with empty string, or the user account is locked.",
+            "content": {
+              "application/json": {
+                "schema": { 
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "description": "error"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Please enter your account and password."
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "description": "error"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "This account is locked. Please contact Admin."
+                      }
+                    }                    
+                  }
+                ]
+                }
+              }
+            }            
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized. Wrong password.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Password incorrect."
+                  }
+                }
+              }
+            }
+          }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Not Found. User is not found with the specific account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "User is not existed."
+                  }
+                }
+              }
+            }
+          }
           }
         },
         "requestBody": {
@@ -55,10 +230,14 @@
                 "type": "object",
                 "properties": {
                   "account": {
-                    "example": "any"
+                    "type": "string",
+                    "description": "user account",
+                    "example": "1001"
                   },
                   "password": {
-                    "example": "any"
+                    "type": "string",
+                    "description": "user password",
+                    "example": "titaner"
                   }
                 }
               }
@@ -69,17 +248,75 @@
     },
     "/users/edit": {
       "put": {
-        "description": "",
+        "description": "Update the user password.",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK. The password is updated. Return user data except for password.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties":{
+                    "id": {
+                      "type": "integer",
+                      "description": "The user id."
+                    },
+                    "account": {
+                      "type": "string",
+                      "description": "The user account."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The user name."
+                    },
+                    "passwordWrongTimes": {
+                      "type": "integer",
+                      "description": "Times of the user entered wrong password."
+                    },
+                    "isAdmin": {
+                      "type": "boolean",
+                      "description": "If the user is Admin."
+                    },
+                    "isLocked": {
+                      "type": "boolean",
+                      "description": "If the user account is locked."
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "The timestamp of the user account created."
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description":"The timestamp of the user account updated."
+                    }
+                  }
+                }
+              }
+            }
+  
           },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
+          "400": {
+            "description": "Bad Request. The password and check password are not the same.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Password and checkPassword are not same."
+                  }
+                }
+              }
+            }
+          }
           }
         },
         "requestBody": {
@@ -89,10 +326,14 @@
                 "type": "object",
                 "properties": {
                   "password": {
-                    "example": "any"
+                    "type": "string",
+                    "description": "new password",
+                    "example": "12345678"
                   },
                   "checkPassword": {
-                    "example": "any"
+                    "type": "string",
+                    "description": "enter the new password again",
+                    "example": "12345678"
                   }
                 }
               }
@@ -103,55 +344,163 @@
     },
     "/records/rawRecords": {
       "get": {
-        "description": "",
+        "description": "取得登入使用者的紀錄，由更新時間新至舊排列",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK. Return an array of record objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "The record id."
+                      },
+                      "checkMethod": {
+                        "type": "string",
+                        "description": "User check in method."
+                      },
+                      "workday": {
+                        "type": "string",
+                        "description": "The workday of the check in time."
+                      },
+                      "checkIn": {
+                        "type": "string",
+                        "description": "The earliest check time of local workday."
+                      },
+                      "checkOut": {
+                        "type": "string",
+                        "description": "The latest check time of local workday."
+                      },                      
+                      "isHoliday": {
+                        "type": "boolean",
+                        "description": "If the workday is holiday."
+                      },
+                      "isNormal": {
+                        "type": "boolean",
+                        "description": "If the work hour in a workday is normal."
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The timestamp of the user account created."
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description":"The timestamp of the user account updated."
+                      },
+                      "UserId": {
+                        "type": "integer",
+                        "description": "The user ID which the record belongs to."
+                      }
+                      }
+                    }
+                }
+              }
+            }
           },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
+          "404": {
+            "description": "Not Found. Record is not found with the specific user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Record is not existed."
+                  }
+                }
+              }
+            }
+          }
           }
         }
       }
     },
     "/check": {
       "post": {
-        "description": "",
+        "description": "新增一則紀錄",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
+            "description": "OK. New record added successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "New record added"
+                  }
+                }
+              }
+            }
           }
         }
       }
-    },
+    }
+  },
     "/calendar": {
       "put": {
         "description": "",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK. Calendar.json is updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "update calendar.json successfully"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
+            "description": "Bad Request. Update calendar failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "appendFile failed"
+                    }
+                  }
+                }
+              }
+            }
           }
+          
         }
       }
     }

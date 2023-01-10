@@ -50,9 +50,14 @@ const recordController = {
       const id = helpers.getUser(req).id
       const userRecords = await Record.findAll({
         where: { UserId: id },
-        order: [['createdAt', 'DESC']],
+        order: [['updatedAt', 'DESC']],
         raw: true,
       })
+
+      if (!userRecords) {
+        return res.status(404).json({ status: 'error', message: 'Record is not existed.' })
+      }
+            
       return res.status(200).json(userRecords)
     } catch (err) {
       next()

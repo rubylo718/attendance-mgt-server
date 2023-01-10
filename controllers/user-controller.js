@@ -77,8 +77,8 @@ const userController = {
     const user = await User.findByPk(id, {
       attributes: ['id', 'account', 'name', 'isAdmin', 'isLocked']
     })
-    if (!user) return res.json({ status: 'error', message: 'user not found' })
-    return res.json(user)
+    if (!user) return res.status(404).json({ status: 'error', message: 'user not found' })
+    return res.status(200).json(user)
   },
   editUser: async (req, res, next) => {
     try {
@@ -91,7 +91,7 @@ const userController = {
       checkPassword = checkPassword?.trim()
 
       if (password !== checkPassword) {
-        return res.status(401).json({status: 'error', message: 'Password and checkPassword are not same.'})
+        return res.status(400).json({ status: 'error', message: 'Password and checkPassword are not same.' })
       }
 
       const updatedUser = await user.update({
