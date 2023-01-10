@@ -58,5 +58,11 @@ https://dry-ridge-01972.herokuapp.com/
 ## 資料設計 ERD
 ![Image](https://i.imgur.com/aXo9X00.png)
 
+## Built with
+- Node.js
+- Express
+- MySQL
+- Swagger for API docs following OpenAPI 3.0
+
 ## Author
 Ruby Lo
