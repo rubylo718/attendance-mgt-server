@@ -3,7 +3,10 @@ Attendance management system 為一個考勤管理系統。使用者可登入系
 
 相關連結：
 
-[API 文件（建置中）](https://dry-ridge-01972.herokuapp.com/api-doc/) | 前端 Repo（建置中）
+[API 文件](https://dry-ridge-01972.herokuapp.com/api-doc/) | [前端 Repo（建置中）](https://github.com/rubylo718/attendance-mgt-client)
+
+## ERD
+![Image](https://i.imgur.com/aXo9X00.png)
 
 ## Login Account
 - 使用者 account: 1001, password: titaner
